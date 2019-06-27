@@ -1,0 +1,84 @@
+package com.example.tolba.myapplication;
+
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+public class MainActivity extends AppCompatActivity implements  SensorEventListener{
+    private static  final String TAG="MainActivity";
+
+    private SensorManager sensorManager;
+    Sensor accelerometer;
+    TextView xValue,yValue,zValue;
+  //SensorEvent sensorEvent;
+  //final EditText edittext = (EditText) findViewById(R.id.textView2);
+    protected void onCreate(Bundle savedInstanceState){
+
+
+        //final EditText edittext = (EditText) findViewById(R.id.textView2);
+         //mText = (TextView) findViewById(R.id.textView2);
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        xValue=(TextView) findViewById(R.id.xValue);
+        yValue=(TextView) findViewById(R.id.yValue);
+        zValue=(TextView) findViewById(R.id.zValue);
+
+        final Button button= (Button) findViewById(R.id.button);
+       final Button button2= (Button) findViewById(R.id.button2);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //startActivity(new Intent(MainActivity.this,StandingsActivity.class));
+                //xValue.setEnabled(true);
+                yValue.setVisibility(View.VISIBLE);
+                xValue.setVisibility(View.VISIBLE);
+                zValue.setVisibility(View.VISIBLE);
+                button2.setVisibility(View.VISIBLE);
+
+
+            }
+        });
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v2) {
+                //startActivity(new Intent(MainActivity.this,StandingsActivity.class));
+                //xValue.setEnabled(true);
+                yValue.setVisibility(View.INVISIBLE);
+                xValue.setVisibility(View.INVISIBLE);
+                zValue.setVisibility(View.INVISIBLE);
+                button2.setVisibility(View.INVISIBLE);
+
+            }
+        });
+
+
+        Log.d(TAG,"onCreate: Initializing Sensor Services");
+        sensorManager=(SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        accelerometer=sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(MainActivity.this,accelerometer,SensorManager.SENSOR_DELAY_NORMAL);
+        Log.d(TAG,"onCreate: Registered accelerometer");
+    }
+public void onAccuracyChanged(Sensor sensor,int i){
+
+}
+
+public void onSensorChanged(SensorEvent sensorEvent){
+
+
+     //Log.d(TAG,"onSensorChanged:X: "+ sensorEvent.values[0]+" Y: "+sensorEvent.values[1]+" Z: "+sensorEvent.values[2]);
+xValue.setText("X: "+ sensorEvent.values[0]);
+    yValue.setText("Y: "+ sensorEvent.values[1]);
+    zValue.setText("Z: "+ sensorEvent.values[2]);
+}
+
+}
+
+
